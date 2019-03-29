@@ -9,3 +9,4 @@ def get_titanic_data():
 
 def get_iris_data():
    return pd.read_sql('SELECT s.species_name, m.* FROM species s JOIN measurements m ON m.species_id = s.species_id', get_connection('iris_db'))
+
