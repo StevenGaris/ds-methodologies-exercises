@@ -20,13 +20,12 @@ import acquire
 
 
 def chage_datetime(df):
-    df['sale_date'] = df.sale_date.str.replace(' 00:00:00 GMT', '')
-    df['sale_date'] = df.sale_date.str[5:]
-    df['sale_date'] = df.sale_date.str.replace(' ', '/')
-    df['sale_date'] = pd.to_datetime(df['sale_date'], format='%d/%b/%Y')
+    dt_format = '%a, %d %b %Y %H:%M:%S %Z'
+    df['sale_date'] = pd.to_datetime(df.sale_date, format= dt_format, utc=True)
     return df
     
 
+# Can just add utc=True in to_datetime
 def to_UTC(df):
     df = df.tz_localize('utc')
     return df
@@ -38,8 +37,8 @@ def expand_dt(df):
     df['quarter'] = df.time.dt.quarter
     df['month'] = df.time.dt.month
     df['day_of_month'] = df.time.dt.day
-    df['day_of_week'] = df.time.dt.dayofweek
-    df['weekend'] = ((pd.DatetimeIndex(df.index).dayofweek) // 5 == 1).astype(float)
+    df['day_of_week'] = df.time.dt.day_name().str[:3]
+    df['is_weekend'] = ((pd.DatetimeIndex(df.index).dayofweek) > 4)
     df.drop(columns=['time'], inplace=True)
     return df
 
@@ -53,6 +52,6 @@ def prep_store():
     df = acquire.get_full_df_csv()
     df = chage_datetime(df)
     df = set_dt_index(df)
-    df = to_UTC(df)
     df = expand_dt(df)
     return df
+ 
