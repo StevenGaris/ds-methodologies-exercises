@@ -27,7 +27,7 @@ def get_blog_articles():
         soup = BeautifulSoup(response.content, 'html.parser')
         
         list_of_articles.append({'title': soup.title.string,
-                                 'content': soup.find('div', class_='mk-single-content').text})
+                                 'content': soup.find('div', class_='mk-single-content').text.strip()})
     
     return list_of_articles
 
