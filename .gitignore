@@ -4,3 +4,12 @@ __pycache__
 data/*
 .ipynb_checkpoints
 access.log
+
+env
+
+*.csv
+my_cases
+my_depts
+my_cases_parquet
+my_depts_parquet
+spark-warehouse
